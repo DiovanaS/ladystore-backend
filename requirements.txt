@@ -1,0 +1,10 @@
+flask==3.0.3
+flask_cors==5.0.0
+flask_marshmallow==1.2.1
+flask_restful==0.3.10
+flask_sqlalchemy==3.1.1
+marshmallow==3.23.0
+marshmallow_sqlalchemy==1.1.0
+python_dotenv==1.0.1
+SQLAlchemy==2.0.35
+werkzeug==3.0.4
