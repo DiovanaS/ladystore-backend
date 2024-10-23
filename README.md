@@ -1,4 +1,4 @@
-### 👠 LadyStore Server
+### 👠 LadyStore Backend
 
 Servidor que atende às demandas da LadyStore, uma loja de vestuário, nas atividades internas, como o gerenciamento de clientes e fornecedores, além do registro de vendas.
 
@@ -15,7 +15,7 @@ O sistema foi desenvolvido utilizando **Python 3.12**, sendo recomendada a utili
 Será necessário adquirir uma cópia local do código-fonte, que pode ser obtida com o seguinte comando:
 
 ```bash
-git clone https://github.com/DiovanaS/ladystore-server
+git clone https://github.com/DiovanaS/ladystore-backend
 ```
 
 #### 2️⃣ Instalar as Dependências
