@@ -1,11 +1,13 @@
+from flask import Blueprint
 from flask import request
 from http import HTTPStatus
 
 from app.facades import response
 
-from . import service as customer_service, customer
+from . import service as customer_service
 from .schema import customer_schema, customers_schema
 
+customer = Blueprint('customer', __name__, url_prefix='/customer')
 
 @customer.post('/create')
 def create():
@@ -39,7 +41,6 @@ def get_one_by_id(id: int):
         customer_service.find_first_by_id(id)
     )
 
-
 @customer.patch('/update/<int:id>')
 def update(id: int):
     return response.as_schema(
@@ -47,8 +48,8 @@ def update(id: int):
         customer_service.update(id, request.get_json())
     )
 
-
 @customer.delete('/delete/<int:id>')
 def delete(id: int):
     customer_service.delete(id)
     return response.as_message('Customer deleted.')
+

@@ -1,7 +1,7 @@
 from flask import Flask
 
 from .config import configure_enviroment, configure_extensions
-from .modules.customer import customer
+from .modules.customer.controller import customer
 from .modules.error import error
 from .modules.product import product
 from .modules.supplier import supplier
