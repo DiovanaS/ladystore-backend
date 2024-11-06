@@ -1,1 +1,2 @@
-from .configurations import configure_enviroment, configure_extensions
+from . import parameter, path
+from .setup import setup_enviroment, setup_extensions

@@ -29,4 +29,4 @@ class AddressMixin():
 
     @declared_attr
     def complement(cls):
-        return Column(String(40), nullable=True)
+        return Column(String(40))

@@ -1,4 +1,4 @@
-### 👠 LadyStore Backend
+### 👠 LadyStore Server
 
 Servidor que atende às demandas da LadyStore, uma loja de vestuário, nas atividades internas, como o gerenciamento de clientes e fornecedores, além do registro de vendas.
 
@@ -15,7 +15,7 @@ O sistema foi desenvolvido utilizando **Python 3.12**, sendo recomendada a utili
 Será necessário adquirir uma cópia local do código-fonte, que pode ser obtida com o seguinte comando:
 
 ```bash
-git clone https://github.com/DiovanaS/ladystore-backend
+git clone https://github.com/DiovanaS/ladystore-server
 ```
 
 #### 2️⃣ Instalar as Dependências
@@ -40,7 +40,14 @@ Pode ser necessário instalar o pacote `en_core_web_sm`. O comando pode variar c
   python -m spacy download en_core_web_sm
   ```
 
-#### 3️⃣ Executar
+#### 3️⃣ Configurar as Variáveis de Ambiente
+
+Crie um arquivo `.env` com base no modelo fornecido em `.env.example.` Neste arquivo, especifique os seguintes campos:
+
+- `SECRET_KEY` - Chave secreta do servidor, que deve ser longa e conter múltiplos caracteres;
+- `ALLOWED_HOSTS` - Uma lista de endereços (ou domínios) permitidos para fazer requisições ao servidor, separados por espaço.
+
+#### 4️⃣ Executar
 
 Após concluir as etapas anteriores, você poderá inicializar o servidor com o seguinte comando:
 
@@ -50,7 +57,7 @@ flask --app app run
 
 ### 📚 Documentação
 
-Em breve...
+A documentação é gerada conforme o padrão Swagger através do Flask-RESTx e fica disponível na URL base (`/`). Para testes locais, acesse `http://localhost:5000/`.
 
 ### ⚖️ Licença
 

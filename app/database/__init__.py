@@ -1,5 +1,5 @@
 from .inheritable import Model, Models
-from .models import (
+from .model import (
     Customer, Customers,
     ProductSupplier, ProductSuppliers,
     Product, Products,
