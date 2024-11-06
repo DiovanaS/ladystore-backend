@@ -45,6 +45,7 @@ Pode ser necessário instalar o pacote `en_core_web_sm`. O comando pode variar c
 Crie um arquivo `.env` com base no modelo fornecido em `.env.example.` Neste arquivo, especifique os seguintes campos:
 
 - `SECRET_KEY` - Chave secreta do servidor, que deve ser longa e conter múltiplos caracteres;
+- `SQLALCHEMY_DATABASE_URI` - Credenciais para acesso ao banco de dados, incluindo usuário, senha, endereço e nome. Caso não sejam informados, o SQLite será utilizado.
 - `ALLOWED_HOSTS` - Uma lista de endereços (ou domínios) permitidos para fazer requisições ao servidor, separados por espaço.
 
 #### 4️⃣ Executar
