@@ -17,6 +17,7 @@ class ProductSupplierNotFound(NotFound):
 class SupplierNotFound(NotFound):
     description = 'Supplier not found'
 
+
 class SaleNotFound(NotFound):
     description = 'Sale not found'
 
@@ -24,9 +25,13 @@ class SaleNotFound(NotFound):
 class FinancialNotFound(NotFound):
     description = 'Financial transaction not found'
 
+
 class FinancialSaleNotFound(NotFound):
     description = 'Financial-sale relationship not found'
 
+
+class StockRelationshipNotFound(NotFound):
+    description = 'Stock-product relationship not found'
 
 _response = lambda exception: (HTTPStatus.NOT_FOUND, exception.description)
 
@@ -43,3 +48,5 @@ sale_not_found = _response(SaleNotFound)
 financial_not_found = _response(FinancialNotFound)
 
 financial_sale_not_found = _response(FinancialSaleNotFound)
+
+stock_relationship_not_found = _response(StockRelationshipNotFound)
