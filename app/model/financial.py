@@ -1,7 +1,8 @@
 from flask_restx.fields import Integer, String, Float, DateTime
 from app.extension import api
+from typing import TypedDict
 
-class FinancialModel:
+class FinancialModel(TypedDict):
     id: int
     operation_date: str
     operation_type: str

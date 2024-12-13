@@ -10,5 +10,5 @@ ENV_FILE = ROOT_DIR / '.env'
 STORAGE_DIR = ROOT_DIR / 'storage'
 ''' /storage/ '''
 
-SQLITE_FILE = STORAGE_DIR / 'database.sqlite3'
+PARAMETERS_FILE = ROOT_DIR / 'app' / 'config' / 'parameters.py'
 ''' /storage/database.sqlite3 '''

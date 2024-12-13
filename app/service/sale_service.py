@@ -1,4 +1,4 @@
-from app.database import Sale, Product, Stock, Customer, SaleCustomerStockModel
+from app.database import Sale, Product, Stock, Customer, SaleCustomerStock
 from app.exception import (
     SaleNotFound,
     CustomerNotFound,
@@ -38,7 +38,7 @@ def update(id: int, data: SaleModel) -> Sale:
 
 def delete(id: int):
     sale = find_first_by_id(id)
-    SaleCustomerStockModel.query.filter_by(sale_id=sale.id).delete()
+    SaleCustomerStock.query.filter_by(sale_id=sale.id).delete()
     for product in sale.products:
         stock = Stock.find_first_by_product_id(product.id)
         if stock:
@@ -87,7 +87,7 @@ def create_stock_rel(sale_id: int, data):
     sale.customer = customer  
     Sale.save(sale)
 
-    sale_customer_stock = SaleCustomerStockModel(
+    sale_customer_stock = SaleCustomerStock(
         sale_id=sale.id,
         sale=sale,
         customer_id=customer.id,
@@ -100,13 +100,13 @@ def create_stock_rel(sale_id: int, data):
 
 def find_all_stock_rels_by_sale_id(sale_id: int):
     sale = find_first_by_id(sale_id)
-    sale_customer_stock_rels = SaleCustomerStockModel.query.filter_by(sale_id=sale.id).all()
+    sale_customer_stock_rels = SaleCustomerStock.query.filter_by(sale_id=sale.id).all()
     return sale_customer_stock_rels 
 
 
 def find_stock_rel_by_ids(sale_id: int, product_id: int):
     sale = find_first_by_id(sale_id)
-    relation = SaleCustomerStockModel.query.filter_by(sale_id=sale.id, stock_id=product_id).first()
+    relation = SaleCustomerStock.query.filter_by(sale_id=sale.id, stock_id=product_id).first()
     if not relation:  raise StockRelationshipNotFound()
     return relation
 
@@ -118,7 +118,7 @@ def delete_stock_rel(sale_id: int, product_id: int):
     if stock:
         stock.quantity += relation.stock.quantity 
         Stock.save(stock)
-    SaleCustomerStockModel.query.filter_by(sale_id=sale.id, stock_id=product_id).delete()
+    SaleCustomerStock.query.filter_by(sale_id=sale.id, stock_id=product_id).delete()
     Sale.save(sale)
 
 

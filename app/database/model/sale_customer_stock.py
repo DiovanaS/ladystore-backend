@@ -52,4 +52,3 @@ class SaleCustomerStock(database.Model, Model, TimestampMixin):
 from .sale import Sale
 from .customer import Customer
 from .stock import Stock
-

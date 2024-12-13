@@ -1,7 +1,8 @@
 from flask_restx.fields import Integer, String, DateTime
 from app.extension import api
+from typing import TypedDict
 
-class SaleModel:
+class SaleModel(TypedDict):
     id: int
     product: str
     client: str
