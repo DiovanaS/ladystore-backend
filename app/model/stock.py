@@ -1,35 +1,44 @@
-from flask_restx.fields import Integer, String
-from app.extension import api
+from flask_restx.fields import Integer, String, Float
 from typing import TypedDict
+from app.extension import api
 
 
 class StockModel(TypedDict):
     id: int
     name: str
-    unit: int
-    quantity: int
+    unit: str
+    quantity: float
+    code: str
     complement: str
 
 
 stock_model = api.model('Stock', StockModel(
     id=Integer(title='ID', readonly=True),
     name=String(
-        title='Name',
+        title='Stock Name',
         required=True,
         min_length=1,
-        max_length=40
+        max_length=100
     ),
-    unit=Integer(
-        title='Unit of Measurement',
+    unit=String(
+        title='Unit',
+        required=True,
+        min_length=1,
+        max_length=20
+    ),
+    quantity=Float(
+        title='Quantity',
         required=True
     ),
-    quantity=Integer(
-        title='Quantity in Stock',
-        required=True
+    code=String(
+        title='Code',
+        required=True,
+        min_length=1,
+        max_length=50
     ),
     complement=String(
-        title='Complementary Information',
+        title='Complement',
         required=False,
-        max_length=40
+        max_length=200
     )
 ))
