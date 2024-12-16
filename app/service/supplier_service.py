@@ -13,16 +13,8 @@ def create(data: SupplierModel) -> Supplier:
     return supplier
 
 
-def find_all() -> Suppliers:
-    return Supplier.find_all()
-
-
-def find_all_by_company_or_trading_name(
-    name: str
-) -> Suppliers:
-    return Supplier.find_all_by_company_or_trading_name(
-        name
-    )
+def find_all_by(**values) -> Suppliers:
+    return Supplier.find_all_by(**values)
 
 
 def find_first_by_id(id: int) -> Supplier:

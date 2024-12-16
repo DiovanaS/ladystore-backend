@@ -28,32 +28,14 @@ class Supplier(database.Model, Model, AddressMixin, TimestampMixin):
     )
 
     @classmethod
-    def __query_all(cls, filters: List = None) -> Suppliers:
+    def find_all_by(cls, **values) -> Suppliers:
         return cls._query_all(
-            filters=filters,
+            icontains=values,
             ordinances=[
                 cls.company_name,
                 cls.trading_name,
                 cls.cnpj,
                 cls.phone
-            ]
-        )
-
-    @classmethod
-    def find_all(cls) -> Suppliers:
-        return cls.__query_all()
-
-    @classmethod
-    def find_all_by_company_or_trading_name(
-        cls,
-        name: str
-    ) -> Suppliers:
-        return cls.__query_all(
-            filters=[
-                or_(
-                    cls.company_name.icontains(name),
-                    cls.trading_name.icontains(name)
-                )
             ]
         )
 

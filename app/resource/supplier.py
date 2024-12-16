@@ -1,3 +1,4 @@
+from flask import request
 from flask_restx import Namespace, Resource
 from http import HTTPStatus
 
@@ -20,6 +21,8 @@ ns = Namespace(
 
 @ns.route('/')
 class Supplier(Resource):
+    _SEARCH_ARGS = ('company_name', 'trading_name', 'cnpj', 'phone')
+
     @ns.doc('create')
     @ns.expect(supplier_model)
     @ns.marshal_with(supplier_model, code=HTTPStatus.CREATED)
@@ -33,10 +36,17 @@ class Supplier(Resource):
         )
 
     @ns.doc('get_all')
+    @ns.param(_SEARCH_ARGS[0], 'Filter by company name', required=False)
+    @ns.param(_SEARCH_ARGS[1], 'Filter by trading name', required=False)
+    @ns.param(_SEARCH_ARGS[2], 'Filter by cnpj', required=False)
+    @ns.param(_SEARCH_ARGS[3], 'Filter by phone', required=False)
     @ns.marshal_list_with(supplier_model)
     def get(self):
         ''' Get all suppliers '''
-        return supplier_service.find_all()
+        return supplier_service.find_all_by(**{
+            arg: request.args.get(arg)
+            for arg in self._SEARCH_ARGS
+        })
 
 
 @ns.route('/<int:id>')
@@ -64,14 +74,3 @@ class SupplierById(Resource):
         supplier_service.delete(id)
         return (None, HTTPStatus.NO_CONTENT)
 
-
-@ns.route('/search/<string:name>')
-@ns.param('name', 'The company or trading name')
-class SupplierByName(Resource):
-    @ns.doc('get_all_by_company_or_trading_name')
-    @ns.marshal_list_with(supplier_model)
-    def get(self, name: str):
-        ''' Get all suppliers by company or trading name '''
-        return supplier_service.find_all_by_company_or_trading_name(
-            name
-        )
