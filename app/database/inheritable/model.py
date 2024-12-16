@@ -1,7 +1,7 @@
 from flask_sqlalchemy.model import Model as SQLAlchemyModel
 from re import findall
 from sqlalchemy.ext.declarative import declared_attr
-from typing import List
+from typing import Dict, List
 
 from app.extension import database
 
@@ -36,15 +36,21 @@ class Model(SQLAlchemyModel):
     @classmethod
     def _query_all(
         cls,
-        columns: List = None,
-        joins: List = None,
-        filters: List = None,
-        ordinances: List = None
+        columns: List | None = None,
+        joins: List | None = None,
+        icontains: Dict | None = None,
+        ordinances: List | None = None
     ) -> Models:
         query = cls.query
         if columns: query = query.with_entities(*columns)
         for join in joins or []: query = query.join(join)
-        if filters: query = query.filter(*filters)
+        if icontains:
+            filters = [
+                getattr(cls, key).icontains(value) 
+                for key, value in icontains.items()
+                if value is not None
+            ]
+            query = query.filter(*filters)
         if ordinances: query = query.order_by(*ordinances)
         return query.all()
 

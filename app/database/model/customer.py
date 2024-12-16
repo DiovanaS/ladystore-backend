@@ -1,6 +1,6 @@
 from datetime import date
 from sqlalchemy import Column, Integer, Date, String, or_
-from typing import List, Union
+from typing import Dict, List, Union
 
 from app.extension import database
 
@@ -25,9 +25,9 @@ class Customer(database.Model, Model, AddressMixin, TimestampMixin):
     phone = Column(String(15), nullable=False)
 
     @classmethod
-    def __query_all(cls, filters: List = None) -> Customers:
+    def find_all_by(cls, **values) -> Customers:
         return cls._query_all(
-            filters=filters,
+            icontains=values,
             ordinances=[
                 cls.name,
                 cls.email,
@@ -35,16 +35,6 @@ class Customer(database.Model, Model, AddressMixin, TimestampMixin):
                 cls.cpf,
                 cls.phone
             ]
-        )
-
-    @classmethod
-    def find_all(cls) -> Customers:
-        return cls.__query_all()
-
-    @classmethod
-    def find_all_by_name(cls, name: str) -> Customers:
-        return cls.__query_all(
-            filters=[cls.name.icontains(name)]
         )
 
     @classmethod

@@ -1,3 +1,4 @@
+from flask import request
 from flask_restx import Namespace, Resource
 from http import HTTPStatus
 
@@ -20,6 +21,8 @@ ns = Namespace(
 
 @ns.route('/')
 class Customer(Resource):
+    _SEARCH_ARGS = ('name', 'email', 'cpf', 'phone', 'birthdate')
+
     @ns.doc('create')
     @ns.expect(customer_model)
     @ns.marshal_with(customer_model, code=HTTPStatus.CREATED)
@@ -33,10 +36,18 @@ class Customer(Resource):
         )
 
     @ns.doc('get_all')
+    @ns.param(_SEARCH_ARGS[0], 'Filter by name', required=False)
+    @ns.param(_SEARCH_ARGS[1], 'Filter by e-mail', required=False)
+    @ns.param(_SEARCH_ARGS[2], 'Filter by CPF', required=False)
+    @ns.param(_SEARCH_ARGS[3], 'Filter by phone', required=False)
+    @ns.param(_SEARCH_ARGS[4], 'Filter by birthdate', required=False)
     @ns.marshal_list_with(customer_model)
     def get(self):
         ''' Get all customers '''
-        return customer_service.find_all()
+        return customer_service.find_all_by(**{
+            arg: request.args.get(arg)
+            for arg in self._SEARCH_ARGS
+        })
 
 
 @ns.route('/<int:id>')
@@ -64,13 +75,3 @@ class CustomerById(Resource):
         ''' Delete a customer by ID '''
         customer_service.delete(id)
         return (None, HTTPStatus.NO_CONTENT)
-
-
-@ns.route('/search/<string:name>')
-@ns.param('name', 'The customer name')
-class CustomerByName(Resource):
-    @ns.doc('get_all_by_name')
-    @ns.marshal_list_with(customer_model)
-    def get(self, name: str):
-        ''' Get all customers by name '''
-        return customer_service.find_all_by_name(name)

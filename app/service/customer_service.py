@@ -14,12 +14,8 @@ def create(data: CustomerModel) -> Customer:
     return customer
 
 
-def find_all() -> Customers:
-    return Customer.find_all()
-
-
-def find_all_by_name(name: str) -> Customers:
-    return Customer.find_all_by_name(name)
+def find_all_by(**values) -> Customers:
+    return Customer.find_all_by(**values)
 
 
 def find_first_by_id(id: int) -> Customer:
