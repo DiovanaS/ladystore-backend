@@ -31,9 +31,9 @@ class Product(database.Model, Model, TimestampMixin):
     )
 
     @classmethod
-    def __query_all(cls, filters: List = None) -> Products:
+    def find_all_by(cls, **values) -> Products:
         return cls._query_all(
-            filters=filters,
+            icontains=values,
             ordinances=[
                 cls.name,
                 cls.brand,
@@ -43,16 +43,6 @@ class Product(database.Model, Model, TimestampMixin):
                 cls.color,
                 cls.price
             ]
-        )
-
-    @classmethod
-    def find_all(cls) -> Products:
-        return cls.__query_all()
-
-    @classmethod
-    def find_all_by_name(cls, name: str) -> Products:
-        return cls.__query_all(
-            filters=[cls.name.icontains(name)]
         )
 
     @classmethod

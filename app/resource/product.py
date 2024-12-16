@@ -1,3 +1,4 @@
+from flask import request
 from flask_restx import Namespace, Resource
 from http import HTTPStatus
 
@@ -21,6 +22,8 @@ ns = Namespace(
 
 @ns.route('/')
 class Product(Resource):
+    _SEARCH_ARGS = ('name', 'size')
+
     @ns.doc('create')
     @ns.expect(product_model)
     @ns.marshal_with(product_model, code=HTTPStatus.CREATED)
@@ -33,10 +36,15 @@ class Product(Resource):
         )
 
     @ns.doc('get_all')
+    @ns.param(_SEARCH_ARGS[0], 'Filter by name', required=False)
+    @ns.param(_SEARCH_ARGS[1], 'Filter by size', required=False)
     @ns.marshal_list_with(product_model)
     def get(self):
         ''' Get all products '''
-        return product_service.find_all()
+        return product_service.find_all_by(**{
+            arg: request.args.get(arg)
+            for arg in self._SEARCH_ARGS
+        })
 
 
 @ns.route('/supplier')
@@ -111,13 +119,3 @@ class ProductSupplierByIds(Resource):
         ''' Delete a product-supplier relationship by (product) ID and supplier ID '''
         product_service.delete_supplier_rel(id, supplier_id)
         return (None, HTTPStatus.NO_CONTENT)
-
-
-@ns.route('/search/<string:name>')
-@ns.param('name', 'The product name')
-class ProductByName(Resource):
-    @ns.doc('get_all_by_name')
-    @ns.marshal_list_with(product_model)
-    def get(self, name: str):
-        ''' Get all products by name '''
-        return product_service.find_all_by_name(name)

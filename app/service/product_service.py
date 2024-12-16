@@ -30,12 +30,8 @@ def create_supplier_rel(data: ProductSupplierModel) -> ProductSupplier:
     return product_supplier
 
 
-def find_all() -> Products:
-    return Product.find_all()
-
-
-def find_all_by_name(name: str) -> Products:
-    return Product.find_all_by_name(name)
+def find_all_by(**values) -> Products:
+    return Product.find_all_by(**values)
 
 
 def find_all_supplier_rels_by_id(id: int) -> ProductSuppliers:
