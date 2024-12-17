@@ -25,6 +25,9 @@ class Product(database.Model, Model, TimestampMixin):
     color = Column(String(40), nullable=False)
     price = Column(Float(), nullable=False)
 
+    stocks: Mapped[List['Stock']] = relationship('Stock', back_populates='product')
+
+
     supplier_rels: Mapped[List['ProductSupplier']] = relationship(
         back_populates='product',
         cascade='all, delete'

@@ -1,6 +1,7 @@
-from flask_restx.fields import Integer, String, Float
+from flask_restx.fields import Integer, String, Float, Nested
 from typing import TypedDict
 from app.extension import api
+from .product import ProductModel, product_model
 
 
 class StockModel(TypedDict):
@@ -10,6 +11,8 @@ class StockModel(TypedDict):
     quantity: float
     code: str
     complement: str
+    product_id: int
+    product: ProductModel
 
 
 stock_model = api.model('Stock', StockModel(
@@ -40,5 +43,11 @@ stock_model = api.model('Stock', StockModel(
         title='Complement',
         required=False,
         max_length=200
-    )
+    ),
+    product_id=Integer(title='Product ID', required=True),
+    product=Nested(
+        product_model,
+        title='Product',
+        readonly=True
+    ),
 ))
