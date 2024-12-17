@@ -1,4 +1,4 @@
-from app.database import Stock, Product, StockProduct
+from app.database import Stock, Product
 from app.exception import StockNotFound, ProductNotFound, StockRelationshipNotFound
 from app.model import StockModel
 
@@ -31,40 +31,6 @@ def delete(id: int):
     stock = find_first_by_id(id)
     Stock.delete(stock)
 
-
-def create_product_rel(data):
-    stock = Stock.find_first_by_id(data['stock_id'])
-    if not stock:
-        raise StockNotFound()
-
-    product = Product.find_first_by_id(data['product_id'])
-    if not product:
-        raise ProductNotFound()
-
-    existing_relation = StockProduct.find_first_by_ids(data['stock_id'], data['product_id'])
-    if existing_relation:
-        raise StockRelationshipNotFound("Relationship already exists")
-
-    stock_product = StockProduct(
-        stock_id=data['stock_id'],
-        product_id=data['product_id']
-    )
-    StockProduct.save(stock_product)
-    return stock_product
-
-
-def find_product_rel_by_ids(stock_id: int, product_id: int):
-    relation = StockProduct.find_first_by_ids(stock_id, product_id)
-    if not relation:
-        raise StockRelationshipNotFound()
-    return relation
-
-
-def delete_product_rel(stock_id: int, product_id: int):
-    relation = find_product_rel_by_ids(stock_id, product_id)
-    StockProduct.delete(relation)
-
-
 def search(name: str = None, barcode: str = None, code: str = None):
     filters = []
     if name:
@@ -75,8 +41,6 @@ def search(name: str = None, barcode: str = None, code: str = None):
         filters.append(Stock.code == code)
 
     query = Stock.query
-    if filters:
-        query = query.join(StockProduct).join(Product).filter(*filters)
 
     return query.all()
 

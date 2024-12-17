@@ -7,7 +7,7 @@ from app.exception import (
     product_not_found,
     stock_relationship_not_found
 )
-from app.model import stock_model, stock_product_model
+from app.model import stock_model
 from app.service import stock_service
 
 ns = Namespace(
@@ -57,38 +57,6 @@ class StockById(Resource):
     def delete(self, id: int):
         ''' Delete a stock entry by ID '''
         stock_service.delete(id)
-        return None, HTTPStatus.NO_CONTENT
-
-
-@ns.route('/product')
-class StockProduct(Resource):
-    @ns.doc('create_product_rel')
-    @ns.expect(stock_product_model)
-    @ns.marshal_with(stock_product_model, code=HTTPStatus.CREATED)
-    @ns.response(*invalid_payload)
-    @ns.response(HTTPStatus.NOT_FOUND, 'Stock or product not found')
-    @ns.response(*stock_relationship_not_found)
-    def post(self):
-        ''' Create a new stock-product relationship '''
-        return stock_service.create_product_rel(ns.payload), HTTPStatus.CREATED
-
-
-@ns.route('/<int:id>/product/<int:product_id>')
-@ns.param('id', 'The stock identifier')
-@ns.param('product_id', 'The product identifier')
-@ns.response(*stock_relationship_not_found)
-class StockProductByIds(Resource):
-    @ns.doc('get_one_product_rel_by_ids')
-    @ns.marshal_with(stock_product_model)
-    def get(self, id: int, product_id: int):
-        ''' Get a stock-product relationship by stock ID and product ID '''
-        return stock_service.find_product_rel_by_ids(id, product_id)
-
-    @ns.doc('delete_product_rel')
-    @ns.response(HTTPStatus.NO_CONTENT, 'Success')
-    def delete(self, id: int, product_id: int):
-        ''' Delete a stock-product relationship by stock ID and product ID '''
-        stock_service.delete_product_rel(id, product_id)
         return None, HTTPStatus.NO_CONTENT
     
 @ns.route('/search')

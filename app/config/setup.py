@@ -3,7 +3,7 @@ from flask import Flask
 
 from app.database import *
 from app.extension import api, cors, database
-from app.resource import customer_ns, product_ns, supplier_ns
+from app.resource import customer_ns, product_ns, supplier_ns, stock_ns
 
 from . import parameter, path
 
@@ -45,10 +45,11 @@ def _setup_api(app: Flask) -> None:
     api.add_namespace(customer_ns)
     api.add_namespace(product_ns)
     api.add_namespace(supplier_ns)
+    api.add_namespace(stock_ns)
 
 
 def _setup_cors(app: Flask) -> None:
-    cors.init_app(app, origins=parameter.ALLOWED_HOSTS)
+    cors.init_app(app, resources={r"/*": {"origins": "http://localhost:5173", "methods": ["GET", "POST", "DELETE", "PUT", "PATCH", "OPTIONS"]}})
 
 
 def setup_extensions(app: Flask) -> None:
