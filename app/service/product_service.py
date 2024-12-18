@@ -29,6 +29,8 @@ def create_supplier_rel(data: ProductSupplierModel) -> ProductSupplier:
     ProductSupplier.save(product_supplier)
     return product_supplier
 
+def find_all():
+    return Product._query_all()
 
 def find_all_by(**values) -> Products:
     return Product.find_all_by(**values)

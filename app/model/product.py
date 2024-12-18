@@ -57,5 +57,9 @@ product_model = api.model('Product', ProductModel(
         title='Price',
         required=True,
         min=0
+    ), 
+    sale_id=Integer(
+        title='Surpplier ID',
+        required=True
     )
 ))
