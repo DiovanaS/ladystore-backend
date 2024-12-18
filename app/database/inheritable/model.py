@@ -61,9 +61,8 @@ class Model(SQLAlchemyModel):
     def __init__(self, **data) -> None:
         self.__dict__.update(data)
         
-def update(self, **data) -> None:
-    for field, value in data.items():
-        if isinstance(value, object) and not isinstance(value, (str, int, float, bool)):
-            return
-        setattr(self, field, value)
-
+    def update(self, **data) -> None:
+        for field, value in data.items():
+            if isinstance(value, object) and not isinstance(value, (str, int, float, bool)):
+                return
+            setattr(self, field, value)

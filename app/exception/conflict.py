@@ -29,9 +29,14 @@ class FinancialAlreadyExists(Conflict):
 class FinancialSaleAlreadyExists(Conflict):
     description = 'Financial-sale relationship already exists'
 
+
 class StockNotSufficient(Conflict):
     description = 'Insufficient stock for the requested product'
-    
+
+
+class UserAlreadyExists(Conflict):
+    description = 'E-mail already registered'
+
 
 _response = lambda exception: (HTTPStatus.CONFLICT, exception.description)
 
@@ -50,3 +55,5 @@ financial_already_exists = _response(FinancialAlreadyExists)
 financial_sale_already_exists = _response(FinancialSaleAlreadyExists)
 
 stock_not_sufficient = _response(StockNotSufficient)
+
+user_already_exists = _response(UserAlreadyExists)
