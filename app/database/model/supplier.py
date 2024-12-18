@@ -22,10 +22,7 @@ class Supplier(database.Model, Model, AddressMixin, TimestampMixin):
     cnpj = Column(String(18), unique=True, nullable=False)
     phone = Column(String(15), nullable=False)
 
-    product_rels: Mapped[List['ProductSupplier']] = relationship(
-        back_populates='supplier',
-        cascade='all, delete'
-    )
+    products: Mapped[List['Product']] = relationship('Product', back_populates='supplier')
 
     @classmethod
     def find_all_by(cls, **values) -> Suppliers:
@@ -48,4 +45,3 @@ class Supplier(database.Model, Model, AddressMixin, TimestampMixin):
         return cls._query_first(filters=[cls.cnpj == cnpj])
 
 
-from .product_supplier import ProductSupplier

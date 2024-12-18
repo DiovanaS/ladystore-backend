@@ -23,10 +23,8 @@ class Stock(database.Model, Model, TimestampMixin):
     quantity: Mapped[int] = mapped_column(nullable=False)
     complement: Mapped[str] = mapped_column(String(40), nullable=True)
     
-    # Add product_id column as a foreign key referencing the Product model
     product_id: Mapped[int] = mapped_column(ForeignKey('product.id'), nullable=False)
-    
-    # Establish relationship to Product
+
     product: Mapped['Product'] = relationship('Product', back_populates='stocks')
     
     @classmethod

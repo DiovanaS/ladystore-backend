@@ -5,10 +5,8 @@ from http import HTTPStatus
 from app.exception import (
     invalid_payload,
     product_not_found,
-    product_supplier_already_exists,
-    product_supplier_not_found
 )
-from app.model import product_model, product_supplier_model
+from app.model import product_model
 from app.service import product_service
 
 
@@ -47,20 +45,6 @@ class Product(Resource):
         })
 
 
-@ns.route('/supplier')
-class ProductSupplier(Resource):
-    @ns.doc('create_supplier_rel')
-    @ns.expect(product_supplier_model)
-    @ns.marshal_with(product_supplier_model, code=HTTPStatus.CREATED)
-    @ns.response(*invalid_payload)
-    @ns.response(HTTPStatus.NOT_FOUND, 'Product or supplier not found')
-    @ns.response(*product_supplier_already_exists)
-    def post(self):
-        ''' Create a new product-supplier relationship '''
-        return (
-            product_service.create_supplier_rel(ns.payload),
-            HTTPStatus.CREATED
-        )
 
 
 @ns.route('/<int:id>')
@@ -86,36 +70,4 @@ class ProductById(Resource):
     def delete(self, id: int):
         ''' Delete a product by ID '''
         product_service.delete(id)
-        return (None, HTTPStatus.NO_CONTENT)
-
-
-@ns.route('/<int:id>/supplier')
-@ns.param('id', 'The product identifier')
-class ProductSupplierById(Resource):
-    @ns.doc('get_all_supplier_rels_by_id')
-    @ns.marshal_list_with(product_supplier_model)
-    def get(self, id: int):
-        ''' Get all product-supplier relatanships by (product) ID '''
-        return product_service.find_all_supplier_rels_by_id(id)
-
-
-@ns.route('/<int:id>/supplier/<int:supplier_id>')
-@ns.param('id', 'The product identifier')
-@ns.param('supplier_id', 'The supplier identifier')
-@ns.response(*product_supplier_not_found)
-class ProductSupplierByIds(Resource):
-    @ns.doc('get_one_supplier_rel_by_ids')
-    @ns.marshal_with(product_supplier_model)
-    def get(self, id: int, supplier_id: int):
-        ''' Get a product-supplier relationship by (product) ID and supplier ID '''
-        return product_service.find_first_supplier_rel_by_ids(
-            id,
-            supplier_id
-        )
-
-    @ns.doc('delete_supplier_rel')
-    @ns.response(HTTPStatus.NO_CONTENT, 'Success')
-    def delete(self, id: int, supplier_id: int):
-        ''' Delete a product-supplier relationship by (product) ID and supplier ID '''
-        product_service.delete_supplier_rel(id, supplier_id)
         return (None, HTTPStatus.NO_CONTENT)

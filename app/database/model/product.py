@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Float, String
+from sqlalchemy import Column, Float, String, ForeignKey
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 from typing import List
 
@@ -27,11 +27,9 @@ class Product(database.Model, Model, TimestampMixin):
 
     stocks: Mapped[List['Stock']] = relationship('Stock', back_populates='product')
 
+    supplier_id: Mapped[int] = mapped_column(ForeignKey('supplier.id'), nullable=False)
 
-    supplier_rels: Mapped[List['ProductSupplier']] = relationship(
-        back_populates='product',
-        cascade='all, delete'
-    )
+    supplier: Mapped['Supplier'] = relationship('Supplier', back_populates='products')
 
     @classmethod
     def find_all_by(cls, **values) -> Products:
@@ -52,5 +50,3 @@ class Product(database.Model, Model, TimestampMixin):
     def find_first_by_id(cls, id: int) -> 'Product':
         return cls._query_first(filters=[cls.id == id])
 
-
-from .product_supplier import ProductSupplier
