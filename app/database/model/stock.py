@@ -26,6 +26,7 @@ class Stock(database.Model, Model, TimestampMixin):
     product_id: Mapped[int] = mapped_column(ForeignKey('product.id'), nullable=False)
 
     product: Mapped['Product'] = relationship('Product', back_populates='stocks')
+    sales: Mapped[List['Sale']] = relationship('Sale', back_populates='stock')
     
     @classmethod
     def find_all(cls) -> Stocks:

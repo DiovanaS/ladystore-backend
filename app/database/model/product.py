@@ -26,6 +26,8 @@ class Product(database.Model, Model, TimestampMixin):
     price = Column(Float(), nullable=False)
 
     stocks: Mapped[List['Stock']] = relationship('Stock', back_populates='product')
+    sales: Mapped[List['Sale']] = relationship('Sale', back_populates='product')
+
 
     supplier_id: Mapped[int] = mapped_column(ForeignKey('supplier.id'), nullable=False)
 

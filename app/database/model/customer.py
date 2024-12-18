@@ -1,5 +1,6 @@
 from datetime import date
-from sqlalchemy import Column, Integer, Date, String, or_
+from sqlalchemy import Column, Integer, Date, String, or_, ForeignKey
+from sqlalchemy.orm import Mapped, mapped_column, relationship
 from typing import Dict, List, Union
 
 from app.extension import database
@@ -23,6 +24,8 @@ class Customer(database.Model, Model, AddressMixin, TimestampMixin):
     birthdate = Column(Date, nullable=True)
     email = Column(String(80), unique=True, nullable=False)
     phone = Column(String(15), nullable=False)
+    sales: Mapped[List['Sale']] = relationship('Sale', back_populates='customer')
+
 
     @classmethod
     def find_all_by(cls, **values) -> Customers:

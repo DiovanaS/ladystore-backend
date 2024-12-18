@@ -1,4 +1,4 @@
-from sqlalchemy import Column, String, DateTime
+from sqlalchemy import Column, String, DateTime, ForeignKey
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 from typing import List
 
@@ -15,9 +15,7 @@ class Sale(database.Model, Model, TimestampMixin):
         nullable=False,
         primary_key=True
     )
-    product = Column(String(100), nullable=False)
-    client = Column(String(100), nullable=False)
-    sale_date = Column(DateTime, nullable=False)
+    sale_date = Column(String(50), nullable=False)
     sale_state = Column(String(50), nullable=False)
     observation = Column(String(200), nullable=True)
 
@@ -26,22 +24,14 @@ class Sale(database.Model, Model, TimestampMixin):
         cascade='all, delete'
     )
 
-    customer_stock_rels: Mapped[List['SaleCustomerStock']] = relationship(
-        back_populates='sale',
-        cascade='all, delete'
-    )
+    product_id: Mapped[int] = mapped_column(ForeignKey('product.id'), nullable=False)
+    product: Mapped['Product'] = relationship('Product', back_populates='sales')
 
-    @classmethod
-    def __query_all(cls, filters: List = None) -> Sales:
-        return cls._query_all(
-            filters=filters,
-            ordinances=[
-                cls.sale_date,
-                cls.sale_state,
-                cls.product,
-                cls.client
-            ]
-        )
+    customer_id: Mapped[int] = mapped_column(ForeignKey('customer.id'), nullable=False)
+    customer: Mapped['Customer'] = relationship('Customer', back_populates='sales')
+
+    stock_id: Mapped[int] = mapped_column(ForeignKey('stock.id'), nullable=False)
+    stock: Mapped['Stock'] = relationship('Stock', back_populates='sales')
 
     @classmethod
     def find_all(cls):
@@ -51,7 +41,3 @@ class Sale(database.Model, Model, TimestampMixin):
     @classmethod
     def find_first_by_id(cls, id: int) -> 'Sale':
         return cls._query_first(filters=[cls.id == id])
-
-
-from .financial_sale import FinancialSale
-from .sale_customer_stock import SaleCustomerStock

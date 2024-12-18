@@ -5,7 +5,7 @@ from .model import (
     Supplier, Suppliers,
     Sale, Sales,
     Stock, Stocks,
-    SaleCustomerStock, SaleCustomerStocks,
     Financial, Financials,
-    FinancialSale, FinancialSales
+    FinancialSale, FinancialSales,
+    User, Users,
 )
