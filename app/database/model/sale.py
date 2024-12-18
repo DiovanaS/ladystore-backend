@@ -44,8 +44,9 @@ class Sale(database.Model, Model, TimestampMixin):
         )
 
     @classmethod
-    def find_all(cls) -> Sales:
-        return cls.__query_all()
+    def find_all(cls):
+        return cls._query_all() 
+
 
     @classmethod
     def find_first_by_id(cls, id: int) -> 'Sale':

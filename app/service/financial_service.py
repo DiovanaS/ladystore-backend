@@ -18,8 +18,8 @@ def create(data: FinancialModel) -> Financial:
     return financial
 
 
-def find_all() -> Financials:
-    return Financial.find_all()
+def find_all():
+    return Financial._query_all()
 
 
 def find_all_ordered_by_operation_date() -> Financials:

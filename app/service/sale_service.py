@@ -17,7 +17,7 @@ def create(data: SaleModel) -> Sale:
 
 
 def find_all():
-    return Sale.find_all()
+    return Sale._query_all()
 
 
 def find_first_by_id(id: int) -> Sale:
