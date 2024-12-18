@@ -66,4 +66,3 @@ class Model(SQLAlchemyModel):
             if isinstance(value, object) and not isinstance(value, (str, int, float, bool)):
                 return
             setattr(self, field, value)
-
