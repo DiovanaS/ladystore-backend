@@ -58,7 +58,7 @@ product_model = api.model('Product', ProductModel(
         required=True,
         min=0
     ), 
-    surpplier_id=Integer(
+    supplier_id=Integer(
         title='Surpplier ID',
         required=True
     )
