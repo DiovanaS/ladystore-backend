@@ -39,7 +39,7 @@ def update(id: int, data: SaleModel) -> Sale:
 def delete(id: int):
     sale = find_first_by_id(id)
     SaleCustomerStock.query.filter_by(sale_id=sale.id).delete()
-    for product in sale.products:
+    for product in sale.product:
         stock = Stock.find_first_by_product_id(product.id)
         if stock:
             stock.quantity += product.quantity
@@ -68,7 +68,7 @@ def delete_customer_rel(sale_id: int):
     sale = find_first_by_id(sale_id)
     if not sale.customer: raise CustomerNotFound()
     sale.customer = None
-    Sale.save(sale)
+    Sale.delete(sale)
 
 
 def create_stock_rel(sale_id: int, data):

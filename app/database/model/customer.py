@@ -61,8 +61,14 @@ class Customer(database.Model, Model, AddressMixin, TimestampMixin):
         super().__init__(**data)
 
     def update(self, **data) -> None:
-        data['birthdate'] = self.__parse_birthdate(data['birthdate'])
-        super().update(**data)
+        if 'name' in data:
+            self.name = data['name']
+        if 'email' in data:
+            self.email = data['email']
+        if 'cpf' in data:
+            self.cpf = data['cpf']
+        if 'birthdate' in data:
+            self.birthdate = self.__parse_birthdate(data['birthdate'])
 
     def __parse_birthdate(self, birthdate: Union[date, str]) -> str:
         is_date = isinstance(birthdate, date)

@@ -30,8 +30,11 @@ def update(id: int, data: CustomerModel) -> Customer:
         data['cpf'],
         data['email']
     )
+    
     already_exists = existing_customer and existing_customer.id != id
-    if already_exists: raise CustomerAlreadyExists()
+    if already_exists:
+        raise CustomerAlreadyExists()
+    
     customer.update(**data)
     Customer.save(customer)
     return customer
