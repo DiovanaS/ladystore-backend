@@ -11,7 +11,7 @@ from app.model import FinancialModel, FinancialSaleModel
 def create(data: FinancialModel) -> Financial:
     sale = Sale.find_first_by_id(data['sale_id'])
     if not sale:  raise SaleNotFound()
-    already_exists = Financial.find_first_by_sale_id(data['sale_id'])
+    already_exists = Financial.find_first_by_id(data['sale_id'])
     if already_exists:  raise FinancialAlreadyExists()
     financial = Financial(**data)
     Financial.save(financial)

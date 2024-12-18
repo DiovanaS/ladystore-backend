@@ -19,11 +19,6 @@ class Sale(database.Model, Model, TimestampMixin):
     sale_state = Column(String(50), nullable=False)
     observation = Column(String(200), nullable=True)
 
-    financial_rels: Mapped[List['FinancialSale']] = relationship(
-        back_populates='sale',
-        cascade='all, delete'
-    )
-
     product_id: Mapped[int] = mapped_column(ForeignKey('product.id'), nullable=False)
     product: Mapped['Product'] = relationship('Product', back_populates='sales')
 
@@ -32,6 +27,8 @@ class Sale(database.Model, Model, TimestampMixin):
 
     stock_id: Mapped[int] = mapped_column(ForeignKey('stock.id'), nullable=False)
     stock: Mapped['Stock'] = relationship('Stock', back_populates='sales')
+
+    financials: Mapped[List['Financial']] = relationship('Financial', back_populates='sale')
 
     @classmethod
     def find_all(cls):

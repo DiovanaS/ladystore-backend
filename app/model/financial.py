@@ -6,9 +6,9 @@ class FinancialModel(TypedDict):
     id: int
     operation_date: str
     operation_type: str
-    value: float
+    amount: float
     description: str
-    sale_id: int  
+    sale_id: int
 
 financial_model = api.model('Financial', FinancialModel(
     id=Integer(title='ID', readonly=True),
@@ -22,8 +22,8 @@ financial_model = api.model('Financial', FinancialModel(
         min_length=1,
         max_length=50
     ),
-    value=Float(
-        title='Value',
+    amount=Float(
+        title='Amount',
         required=True
     ),
     description=String(

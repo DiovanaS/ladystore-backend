@@ -1,4 +1,4 @@
-from sqlalchemy import Column, String, Float, DateTime
+from sqlalchemy import Column, String, Float, DateTime, ForeignKey
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 from typing import List
 
@@ -15,21 +15,20 @@ class Financial(database.Model, Model, TimestampMixin):
         nullable=False,
         primary_key=True
     )
-    transaction_date = Column(DateTime, nullable=False)
-    transaction_type = Column(String(50), nullable=False)
+    operation_date = Column(String(50), nullable=False)
+    operation_type = Column(String(50), nullable=False)
     amount = Column(Float, nullable=False)
     description = Column(String(200), nullable=True)
 
-    sale_rels: Mapped[List['FinancialSale']] = relationship(
-        back_populates='financial',
-        cascade='all, delete'
-    )
+    sale_id: Mapped[int] = mapped_column(ForeignKey('sale.id'), nullable=False)
+    sale: Mapped['Sale'] = relationship('Sale', back_populates='financials')
+
 
     @classmethod
     def __query_all(cls, filters: List = None) -> Financials:
         return cls._query_all(
             filters=filters,
-            ordinances=[cls.transaction_date, cls.amount]
+            ordinances=[cls.operation_date, cls.amount]
         )
 
     @classmethod

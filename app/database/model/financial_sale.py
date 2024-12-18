@@ -20,12 +20,7 @@ class FinancialSale(database.Model, Model, TimestampMixin):
         primary_key=True
     )
 
-    financial: Mapped['Financial'] = relationship(
-        back_populates='sale_rels'
-    )
-    sale: Mapped['Sale'] = relationship(
-        back_populates='financial_rels'
-    )
+
 
     @classmethod
     def __query_all(cls, filters: List = None) -> FinancialSales:
