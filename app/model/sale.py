@@ -38,5 +38,13 @@ sale_model = api.model('Sale', SaleModel(
         title='Observation',
         required=False,
         max_length=200
+    ),
+    customer_id=Integer(
+        title='Customer ID',
+        required=True
+    ),
+    stock_id=Integer(
+        title='Stock ID',
+        required=True
     )
 ))
